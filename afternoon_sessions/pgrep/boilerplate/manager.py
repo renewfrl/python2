@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask_script import Manager
+from flask_script import Manager, Command
 from flask import Flask
 from task import whatever
 
@@ -10,11 +10,14 @@ app = Flask(__name__)
 
 manager = Manager(app)
 
-@manager.command
-def find_in_file(args):
-    print("looking for {}".format(args))
-    whatever()
-    # and print htem
+#./manager.py name_of_command 1 2 3 4 5
+@manager.add_command
+class PyGrepCommand(Command):
+    name = 'name_of_command'
+    capture_all_args = True
+
+    def run(self, remaining):
+        print(remaining)
 
 
 if __name__ == "__main__":
